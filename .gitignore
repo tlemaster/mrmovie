@@ -1,0 +1,42 @@
+
+###> symfony/framework-bundle ###
+/.env.local
+/.env.local.php
+/.env.*.local
+/src/config/secrets/prod/prod.decrypt.private.php
+/src/public/bundles/
+/src/var/
+/src/vendor/
+###< symfony/framework-bundle ###
+
+###> docker/general stuff ###
+/docker/database/data
+.log
+###< docker/general stuff ###
+
+
+### IntelliJ project files ###
+*.iml
+*.iws
+*.ipr
+.idea/
+
+### eclipse project file ###
+.settings/
+.classpath
+.project
+
+### NetBeans specific ###
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+nbactions.xml
+nb-configuration.xml
+
+### OS ##
+.DS_Store
+
+### Embedded web-server pid file ###
+/.web-server-pid
