@@ -21,6 +21,9 @@
 *.ipr
 .idea/
 
+### VS studio files ###
+*vscode
+
 ### eclipse project file ###
 .settings/
 .classpath
