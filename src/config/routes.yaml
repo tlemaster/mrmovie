@@ -1,3 +1,7 @@
 app_home:
     path: /
     controller: App\Controller\HomeController::show
+
+app_signup:
+    path: /signup
+    controller: App\Controller\SignUpController::display
