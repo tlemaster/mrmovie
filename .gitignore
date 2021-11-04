@@ -22,7 +22,7 @@
 .idea/
 
 ### VS studio files ###
-*vscode
+*.vscode
 
 ### eclipse project file ###
 .settings/
