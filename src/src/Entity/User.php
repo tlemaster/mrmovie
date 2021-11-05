@@ -6,6 +6,8 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -53,6 +55,19 @@ class User implements UserInterface
      * @ORM\Column(type="array")
      */
     private $roles = ['ROLE_USER'];
+
+     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MovieList", mappedBy="user")
+     */
+    private $movieLists;
+
+    /**
+     * class constructor
+     */
+    public function __construct()
+    {
+        $this->movieLists = new ArrayCollection();
+    }
 
     /**
      * @return mixed
@@ -185,6 +200,14 @@ class User implements UserInterface
     public function eraseCredentials(): void
     {
         $this->plainPassword = null;
+    }
+
+    /**
+     * return Collection|MovieList[]
+     */
+    public function getMovieLists(): Collection
+    {
+        return $this->movieLists;
     }
 
 }

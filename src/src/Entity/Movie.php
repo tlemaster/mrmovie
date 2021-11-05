@@ -5,7 +5,8 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Contstraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\MovieRepository")
@@ -41,7 +42,19 @@ class Movie
      */
     protected $posterPath;
 
-   
+    /**
+     * @ORM\OneToMany(targetEntity="App\Entity\MovieList", mappedBy="movie")
+     */
+    private $movieLists;
+
+    /**
+     * class constructor
+     */
+    public function __construct()
+    {
+        $this->movieLists = new ArrayCollection();
+    }
+
     /**
      * @return mixed
      */
@@ -73,6 +86,26 @@ class Movie
     /**
      * @return string
      */
+    public function getTitle(): string
+    {
+        return $this->title;
+    }
+
+    /**
+     * @param string $title
+     *
+     * @return string
+     */
+    public function setTitle(string $title): string
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
     public function getPosterPath(): string
     {
         return $this->posterPath;
@@ -91,23 +124,11 @@ class Movie
     }
 
     /**
-     * @return string
+     * return Collection|MovieList[]
      */
-    public function getTitle(): string
+    public function getMovieLists(): Collection
     {
-        return $this->title;
-    }
-
-    /**
-     * @param string $title
-     *
-     * @return string
-     */
-    public function setTitle(string $title): string
-    {
-        $this->title = $title;
-
-        return $this;
+        return $this->movieLists;
     }
 
 }
