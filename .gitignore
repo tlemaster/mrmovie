@@ -3,14 +3,15 @@
 /.env.local
 /.env.local.php
 /.env.*.local
-/src/config/secrets/prod/prod.decrypt.private.php
+/git src/config/secrets/prod/prod.decrypt.private.php
 /src/public/bundles/
 /src/var/
 /src/vendor/
 ###< symfony/framework-bundle ###
 
 ###> docker/general stuff ###
-/docker/database/data
+/docker/db/data
+/docker/logs
 .log
 ###< docker/general stuff ###
 

@@ -1,44 +1,12 @@
-# Welcome to Mr. Movie
-A small project that was originally created to help my father keep track of movies he's already seen and showcase a couple of my development skills. This site was created using a mix of technologies including Symfony and ReactJs. 
 
-Thanks for stopping by!
+# Mr Movie
 
+A small project that is inspired by my father's inability to remember movies he'd already seen and showcase a couple of my development skills.
 
-Mr Movie uses the docker/compose config file set created by Martin Pham. Thank You Martin, details listed below.
-# Symfony 5 docker containers
+## Tech Stack
 
-A Proof-of-concept of a running Symfony 5 application inside containers
+This site is created using [Symfony](https://symfony.com/), [ReactJs](https://reactjs.org/), and [Materail UI](https://mui.com/).  Runtime development environment used - [Just Another Symfony Docker](https://github.com/tlemaster/Just-Another-Symfony-Docker) by Todd LeMaster
 
-```
-git clone git@gitlab.com:martinpham/symfony-5-docker.git
+## Credits
 
-cd symfony-5-docker
-
-cd docker
-
-docker-compose up
-```
-
-## Compose
-
-### Database (MariaDB)
-
-...
-
-### PHP (PHP-FPM)
-
-Composer is included
-
-```
-docker-compose run php-fpm composer 
-```
-
-To run fixtures
-
-```
-docker-compose run php-fpm bin/console doctrine:fixtures:load
-```
-
-### Webserver (Nginx)
-
-...
+Site also created by Todd LeMaster. Thanks for stopping by!
