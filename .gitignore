@@ -10,6 +10,7 @@
 ###< symfony/framework-bundle ###
 
 ###> docker/general stuff ###
+/docker/.env
 /docker/db/data
 /docker/logs
 .log
