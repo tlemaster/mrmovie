@@ -9,6 +9,25 @@
 /src/vendor/
 ###< symfony/framework-bundle ###
 
+###> react ###
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+build/Release
+
+node_modules/
+jspm_packages/
+bower_components
+
+dist/
+typings/
+
+.yarn-integrity
+###< react ###
+
 ###> docker/general stuff ###
 /docker/.env
 /docker/db/data

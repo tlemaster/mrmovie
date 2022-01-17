@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mr Movie - Dashboard{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h2>Hi {{ app.user.email }}</h2>
+
+    {% if movieLists %}
+        <table>
+            <tr>
+                <th>Title</th>
+                <th>Viewed</th>
+                <th>More Info</th>
+                <th>Actions</th>
+            </tr>
+            {% for list in movieLists %}
+                {% set deleteLink = url('movie_list_delete', {'id': list.movie.id}) %}
+                {% set imdbLink = imdbMovieUrl.value ~ list.movie.ImdbId %}
+                <tr>
+                    <td>{{ list.movie.title }}</td> 
+                    <td>{{ list.viewed }}</td>
+                    <td><a href="{{ imdbLink }}" target="_blank"><button type="button">Learn More</button></a></td>
+                    <td><a href="{{ deleteLink }}"><button type="button">Delete</button></a></td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>You're fresh out of movies, add one so I can keep track it for you.</p>
+    {% endif %} 
+</div>
+{% endblock %}
