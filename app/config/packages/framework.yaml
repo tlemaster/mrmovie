@@ -16,6 +16,12 @@ framework:
     #fragments: true
     php_errors:
         log: true
+    
+    http_client:
+        scoped_clients:
+            mdb.client:
+                base_uri: 'https://api.themoviedb.org/3/'
+                auth_bearer: eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJkNTFlMDNlNzMwZDVkYjdiZDZlNjgzZDZmZGNjZmYzYiIsInN1YiI6IjYxODIyNTQxZGRkNTJkMDA2MTVlNDM4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.5waWqwIsQB9xOjEBJRULkhHm2H3uVVPWN7z5svdGWTU
 
 when@test:
     framework:

@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mr Movie - Never forget, entertainment.{% endblock %}
+
+{% block body %}
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+
+<div class="example-wrapper">
+    <h1>Ooops</h1>
+    <p>Something went wrong, sorry about that!</p>
+    <p><a href="{{ url('movie_list') }}"><button type="button">Return</button></a> and we'll try again.</p>
+   
+</div>
+{% endblock %}

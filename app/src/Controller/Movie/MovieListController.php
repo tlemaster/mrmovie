@@ -15,7 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MovieListController extends AbstractController
 {
     /**
-     * @Route("/movie-list/", name="movie_list")
+     * @Route("/movie/list/", name="movie_list")
      */
     public function index(ManagerRegistry $doctrine): Response
     {
@@ -32,9 +32,9 @@ class MovieListController extends AbstractController
     }
 
     /**
-     * @Route("/movie-list-delete/{id}", name="movie_list_delete")
+     * @Route("/movie/list/delete/{id}", name="movie_list_delete")
      */
-    public function movieDelete(
+    public function deleteMovieFromList(
         int $id, 
         ManagerRegistry $doctrine
     ): RedirectResponse {
