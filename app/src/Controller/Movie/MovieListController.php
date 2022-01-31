@@ -32,6 +32,7 @@ class MovieListController extends AbstractController
         $entityManager = $this->doctrine->getManager();
         $movieLists = $entityManager->getRepository(MovieList::class)->findBy(['user' => $user]);
         $imdbMovieUrl = $entityManager->getRepository(ApiAttribute::class)->findOneBy(['name' => 'ImdbMovieUrl']);
+        $mdbImageUrl = $entityManager->getRepository(ApiAttribute::class)->findOneBy(['name' => 'mdbImageUrl']);
 
         $response = $mdbApi->suggestMovie($user->getId());
         $candidateMdbId = json_decode($response->getContent());
@@ -55,6 +56,7 @@ class MovieListController extends AbstractController
             'user' => $user,
             'movieLists' => $movieLists,
             'imdbMovieUrl' => $imdbMovieUrl,
+            'mdbImageUrl' => $mdbImageUrl,
             'movieSuggestion' => $movieSuggestion
         ]);
     }

@@ -34,6 +34,7 @@ class UserController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $hashedPassword = $passwordHasher->hashPassword($user, $user->getPassword());
+            $user->setDisplayName($user->getDisplayName());
             $user->setPassword($hashedPassword);
             $user->eraseCredentials();
 
@@ -44,6 +45,8 @@ class UserController extends AbstractController
             $token = new UsernamePasswordToken($user, $hashedPassword, 'main');
             $tokenStorage->setToken($token);
             $session->set('_security_main', serialize($token));
+
+            return $this->redirectToRoute('movie_list');
         }
 
         return $this->render('user/registration.html.twig', ['form' => $form->createView()]);

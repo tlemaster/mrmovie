@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="example-wrapper">
-        <h2>Hi {{ app.user.email }}</h2>
+        <h2>Hi {{ app.user.displayName }}</h2>
         {% include 'components/movieListTable.html.twig' %}   
     </div>
     <div class= "example-wrapper">

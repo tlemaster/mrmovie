@@ -57,13 +57,15 @@ class AppFixtures extends Fixture
     public function buildUsers(ObjectManager $manager): void
     {
         $emails = ['test@testmail.com', 'test2@testmail.com'];
+        $displayNames = ['Robert Paulson', 'Turd Fergison' ];
         $passwords = ['Password!', 'Password2!'];
 
         for ($c = 0; $c < count($emails); $c++) {
             $user = new User();
             $user->setEmail($emails[$c]);
             $password = $this->hasher->hashPassword($user, $passwords[$c]);
-            $user->setPassword($password);
+            $user->setPassword($password)
+                ->setDisplayName($displayNames[$c]);
             $manager->persist($user);
 
             $this->buildMovieList($user, $manager);
@@ -91,7 +93,15 @@ class AppFixtures extends Fixture
         $apiAttribute = new ApiAttribute();
         $apiAttribute->setName('ImdbMovieUrl')
             ->setValue('https://www.imdb.com/title/')
-            ->setApi('none');
+            ->setApi('IMDB');
+        
+        $manager->persist($apiAttribute);
+
+        $apiAttribute = new ApiAttribute();
+        $apiAttribute->setName('mdbImageUrl')
+            ->setValue('https://image.tmdb.org/t/p/w342/')
+            ->setApi('MDB');
+            
         $manager->persist($apiAttribute);
     }
 }

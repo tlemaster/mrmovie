@@ -1,6 +1,6 @@
 <div id="movie-suggestion">
     <div id="pic">
-        {% set posterUrl = 'https://image.tmdb.org/t/p/w342/' ~ movieSuggestion.posterPath %}
+        {% set posterUrl = mdbImageUrl.value ~ movieSuggestion.posterPath %}
         <img src="{{ posterUrl }}" width="342">
     </div>
     <div id="title-link">
