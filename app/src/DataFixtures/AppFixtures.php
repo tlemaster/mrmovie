@@ -7,6 +7,7 @@ use App\Entity\Movie;
 use App\Entity\MovieList;
 use App\Entity\User;
 use App\Entity\ApiAttribute;
+use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
@@ -72,12 +73,14 @@ class AppFixtures extends Fixture
     public function buildMovieList(User $user, ObjectManager $manager): void 
     {
         $movies = $manager->getRepository(Movie::class)->findAll();
-        
+        $date = new DateTime();
+
         foreach ($movies as $movie) {
             $movieList = new MovieList();
             $movieList->setMovie($movie)
                 ->setUser($user)
-                ->setViewed(true);
+                ->setViewed(true)
+                ->setLastDateSuggested($date);
             
                 $manager->persist($movieList);
         }

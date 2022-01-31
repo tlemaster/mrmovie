@@ -8,8 +8,10 @@
     </div>
     <div id="actions">
         {% set imdbLink = imdbMovieUrl.value ~ movieSuggestion.ImdbId %}
+        {% set addLink = url('movie_list_add', {'id': movieSuggestion.id}) %}
+        {% set skipLink = url('movie_list_skip', {'id': movieSuggestion.id }) %}
         <a href="{{ imdbLink }}" target="_blank"><button type="button">Learn More</button></a>
-        <a href="" ><button type="button">Add to List</button></a>
-        <a href="" ><button type="button">Skip</button></a>
+        <a href="{{ addLink }}" ><button type="button">Add to List</button></a>
+        <a href="{{ skipLink }}" ><button type="button">Skip</button></a>
     </div>
 </div>
