@@ -1,0 +1,15 @@
+<div id="movie-suggestion">
+    <div id="pic">
+        {% set posterUrl = 'https://image.tmdb.org/t/p/w342/' ~ movieSuggestion.posterPath %}
+        <img src="{{ posterUrl }}" width="342">
+    </div>
+    <div id="title-link">
+        <p>{{ movieSuggestion.title }}</p>
+    </div>
+    <div id="actions">
+        {% set imdbLink = imdbMovieUrl.value ~ movieSuggestion.ImdbId %}
+        <a href="{{ imdbLink }}" target="_blank"><button type="button">Learn More</button></a>
+        <a href="" ><button type="button">Add to List</button></a>
+        <a href="" ><button type="button">Skip</button></a>
+    </div>
+</div>

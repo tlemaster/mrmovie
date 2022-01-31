@@ -35,10 +35,10 @@ class AppFixtures extends Fixture
 
     public function buildMovies(ObjectManager $manager): void 
     {
-        $titles = ['Dune', 'Eternals', 'The Suicide Squad'];
-        $mDbIds = ['438631', '524434', '436969'];
-        $imDbIds = ['tt1160419', 'tt9032400', 'tt6334354'];
-        $posterPaths = ['d5NXSklXo0qyIYkgV94XAgMIckC.jpg', 'b6qUu00iIIkXX13szFy7d0CyNcg.jpg', 'kb4s0ML0iVZlG6wAKbbs9NAm6X.jpg'];
+        $titles = ['Spider-Man: No Way Home', 'Dune', 'Eternals', 'The Suicide Squad'];
+        $mDbIds = ['634649','438631', '524434', '436969'];
+        $imDbIds = ['tt10872600', 'tt1160419', 'tt9032400', 'tt6334354'];
+        $posterPaths = ['1g0dhYtq4irTY1GPXvft6k4YLjm.jpg', 'd5NXSklXo0qyIYkgV94XAgMIckC.jpg', 'b6qUu00iIIkXX13szFy7d0CyNcg.jpg', 'kb4s0ML0iVZlG6wAKbbs9NAm6X.jpg'];
 
         for ($c = 0; $c < count($mDbIds); $c++) {
             $movie = new Movie();
