@@ -7,6 +7,7 @@ use App\Entity\User;
 use App\Entity\Movie;
 use App\Entity\MovieList;
 use Doctrine\Persistence\ManagerRegistry;
+use stdClass;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class MdbApiAdapter
@@ -43,6 +44,48 @@ class MdbApiAdapter
         ];
 
         return $movie;
+    }
+
+    public function searchMovie($searchTerm): array 
+    {
+        $response = $this->mdbClient->request(
+            'GET',
+            'search/movie', [
+                'query' => [
+                    'query' => $searchTerm
+                ]
+        ]);
+
+        $data = $this->processResponse($response);
+        
+        if (!$data) {
+            return  ['mdb-error' => $response->getStatusCode()];
+        }
+
+        $movies = [];
+        foreach($data->results as $result) {
+            $movies[$result->id] = $result->title; 
+        }
+
+        return $movies;
+    }
+
+    public function getConfig(): object 
+    {
+        $response = $this->mdbClient->request(
+            'GET',
+            'configuration'
+        );
+
+        $data = $this->processResponse($response);
+
+        if (!$data) {
+            $error = new stdClass();
+            $error->mdbError = $response->getStatusCode();
+            return $error;
+        }
+
+        return $data;
     }
 
     protected function processResponse(object $response): mixed

@@ -114,6 +114,7 @@ class MovieListController extends AbstractController
     {
         $entityManager = $this->doctrine->getManager();
         $movie = $entityManager->getRepository(Movie::class)->find($id);
+        $today = New DateTime();
 
         if (!$movie) {
             return;
@@ -126,14 +127,16 @@ class MovieListController extends AbstractController
             ]);
         
         if ($movieList) {
+            $movieList->setLastDateSuggested($today);
+            $entityManager->persist($movieList);
+            $entityManager->flush();
             return;
         }
 
-        $date = New DateTime();
         $movieList = new MovieList();
         $movieList->setMovie($movie)
             ->setUser($user)
-            ->setLastDateSuggested($date);
+            ->setLastDateSuggested($today);
 
         if (!$skip) {
             $movieList->setViewed(true);

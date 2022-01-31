@@ -8,6 +8,7 @@ use App\Entity\Movie;
 use App\Entity\MovieList;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Service\MdbApiAdapter;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -55,30 +56,15 @@ class MdbApiController extends AbstractController
     /**
      * @Route("/api/movie/search", name="mdb_api_movie_search")
      */
-    public function searchMovie(string $searchTerm = "Bob"): JsonResponse 
+    public function searchMovie(string $searchTerm): JsonResponse 
     {
-        //Todo: get post and possibly convert
-
-        $response = $this->mdbClient->request(
-            'GET',
-            'search/movie', [
-                'query' => [
-                    'query' => $searchTerm
-                ]
-        ]);
-
-        $data = $this->processResponse($response);
-
-        if (!$data) {
-            return $this->json($response->getStatusCode());
+        $data = $this->adapter->searchMovie($searchTerm);
+        
+        if (array_key_exists('mdb-error',$data)) {
+           return $this->json($data['mdb-error']);
         }
-
-        $results = [];
-        foreach($data->results as $result) {
-            $results[$result->id] = $result->title; 
-        }
-
-        return $this->json($results);
+        
+        return $this->json($data);
     }
 
 
@@ -90,7 +76,7 @@ class MdbApiController extends AbstractController
         $entityManager = $this->doctrine->getManager();
         $user = $entityManager->getRepository(User::class)->findOneBy(['id' => $userId]);
         $candidate = false;
-        $date = date('Y-m-d');
+        $today = new DateTime();
         $page = 1;
         
         if (!$user) {
@@ -102,7 +88,6 @@ class MdbApiController extends AbstractController
                 'GET',
                 'discover/movie', [
                     'query' => [
-                        'primary_release_date.lte' => $date,
                         'page' => $page,
                     ]
             ]);
@@ -137,6 +122,15 @@ class MdbApiController extends AbstractController
                     $candidate = $result->id;
                     return $this->json($candidate);
                 }
+
+                $lastDate = $movieList->getLastDateSuggested();
+                $interval = $lastDate->diff($today);
+                
+                If ($interval->format('%a') > 365) {
+                    $candidate = $result->id;
+                    return $this->json($candidate);
+                }
+                
             }
             
             $page++;
@@ -151,8 +145,12 @@ class MdbApiController extends AbstractController
      */
     public function mdbiTest(): JsonResponse 
     {
-        $response = $this->mdbClient->request('GET', 'configuration');
-
-        return $this->json($response->getContent());
+        $data = $this->adapter->getConfig();
+        
+        if (property_exists($data, 'mdbError')) {
+           return $this->json($data->mdbError);
+        }
+        
+        return $this->json($data);
     }
 }
