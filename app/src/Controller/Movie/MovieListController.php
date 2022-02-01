@@ -3,7 +3,6 @@
 // src/Controller/Movie/MovieListController.php
 namespace App\Controller\Movie;
 
-use App\Controller\Api\MdbApiController;
 use App\Entity\ApiAttribute;
 use App\Entity\MovieList;
 use App\Entity\Movie;
@@ -26,38 +25,17 @@ class MovieListController extends AbstractController
     /**
      * @Route("/movie/list/", name="movie_list")
      */
-    public function index(MdbApiController $mdbApi): Response
+    public function index(): Response
     {
         $user = $this->getUser();
         $entityManager = $this->doctrine->getManager();
         $movieLists = $entityManager->getRepository(MovieList::class)->findBy(['user' => $user]);
         $imdbMovieUrl = $entityManager->getRepository(ApiAttribute::class)->findOneBy(['name' => 'ImdbMovieUrl']);
-        $mdbImageUrl = $entityManager->getRepository(ApiAttribute::class)->findOneBy(['name' => 'mdbImageUrl']);
-
-        $response = $mdbApi->suggestMovie($user->getId());
-        $candidateMdbId = json_decode($response->getContent());
-        $movieSuggestion = $entityManager->getRepository(Movie::class)->findOneBy(['mdbId' => $candidateMdbId]);
-
-        if (!$movieSuggestion) {
-            $response = $mdbApi->getMovie($candidateMdbId);
-            $data = json_decode($response->getContent());
-            
-            $movieSuggestion = new Movie();
-            $movieSuggestion->setMdbId($data->mdbId)
-                ->setImdb($data->imdbId)
-                ->setTitle($data->title)
-                ->setPosterPath($data->posterPath);
-
-            $entityManager->persist($movieSuggestion);
-            $entityManager->flush();
-        }
     
         return $this->render('movie/list.html.twig', [
             'user' => $user,
             'movieLists' => $movieLists,
-            'imdbMovieUrl' => $imdbMovieUrl,
-            'mdbImageUrl' => $mdbImageUrl,
-            'movieSuggestion' => $movieSuggestion
+            'imdbMovieUrl' => $imdbMovieUrl
         ]);
     }
 
