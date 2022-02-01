@@ -8,7 +8,7 @@
         {% include 'components/movieListTable.html.twig' %}   
     </div>
     <div class="example-wrapper">
-        <h3>Search Placeholder</h3>
+        {{ render(path('movie_search')) }}
     </div>
     <div class= "example-wrapper">
         {{ render(path('movie_suggest')) }}

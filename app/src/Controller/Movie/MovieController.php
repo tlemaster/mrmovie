@@ -6,6 +6,7 @@ namespace App\Controller\Movie;
 use App\Controller\Api\MdbApiController;
 use App\Entity\ApiAttribute;
 use App\Entity\Movie;
+use App\Entity\MovieList;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,8 +15,8 @@ use Symfony\Component\Routing\Annotation\Route;
 class MovieController extends AbstractController
 {
    /**
-     * @Route("/movie/suggest/", name="movie_suggest")
-     */
+    * @Route("/movie/suggest/", name="movie_suggest")
+    */
     public function suggest(
         MdbApiController $mdbApi, 
         ManagerRegistry $doctrine
@@ -23,8 +24,10 @@ class MovieController extends AbstractController
 
         $user = $this->getUser();
         $entityManager = $doctrine->getManager();
-        $mdbImageUrl = $entityManager->getRepository(ApiAttribute::class)->findOneBy(['name' => 'mdbImageUrl']);
-        $imdbMovieUrl = $entityManager->getRepository(ApiAttribute::class)->findOneBy(['name' => 'ImdbMovieUrl']);
+        $mdbImageUrl = $entityManager->getRepository(ApiAttribute::class)
+            ->findOneBy(['name' => 'mdbImageUrl']);
+        $imdbMovieUrl = $entityManager->getRepository(ApiAttribute::class)
+            ->findOneBy(['name' => 'ImdbMovieUrl']);
 
         // Todo: change to apiAdapter once suggest is abastracted out of apiController
         $response = $mdbApi->suggestMovie($user->getId());
@@ -49,6 +52,17 @@ class MovieController extends AbstractController
             'movieSuggestion' => $movieSuggestion,
             'mdbImageUrl' => $mdbImageUrl,
             'imdbMovieUrl' => $imdbMovieUrl
+        ]);
+    }
+
+    /**
+     * @Route("/movie/search", name="movie_search")
+     */
+    public function search(): Response 
+    {
+        $user = $this->getUser();
+        return $this->render('components/movieSearch.html.twig', [
+            'user' => $user 
         ]);
     }
 }
