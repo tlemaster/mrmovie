@@ -3,9 +3,19 @@
 {% block title %}Mr Movie - Never forget, entertainment.{% endblock %}
 
 {% block body %}
-    <div class="example-wrapper">
-        <h1>Hi, Welcome</h1>
-        <p>Mr Movie, is little app that helps keep track of the movies you've watched.</p>
-        <p>Feel free to hang on this page to play with the demo or head over to signup and get your own free account.</p> 
+<div class="container col-xl-10 col-xxl-8 px-4 py-5">
+    <div class="row align-items-center g-lg-5 py-5">
+        <div class="col-lg-7 text-center text-lg-start">
+            <h1 class="display-4 fw-bold lh-1 mb-3">Hello, Welcome!</h1>
+            <p class="col-lg-10 fs-4">Mr. Movie is a little app that keeps 
+                track of the movies you've watched. Login over to the right or signup for a free account below.</p>
+            <a href="{{ path('user_registration') }}">
+                <button type="button" class="btn btn-outline-secondary btn-lg px-4">Signup</button>
+            </a>
+        </div>
+        <div class="col-md-10 mx-auto col-lg-5">
+            {{ render(path('user_login')) }}    
+        </div>
     </div>
+</div>
 {% endblock %}
