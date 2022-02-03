@@ -8,8 +8,13 @@
         <main>
             <div class="row g-4">
                 <div class="col-md-8">
+                     <div class="row g-4">
+                        <div class="col-12 mb-3">
+                            {{ render(path('movie_search')) }}
+                        </div>
+                    </div>
+
                     {% include 'components/movieListTable.html.twig' %} 
-                    {# {{ render(path('movie_search')) }}   #}
                 </div>
                 
                 <div class= "col-md-4">

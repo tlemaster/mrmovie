@@ -6,10 +6,10 @@
     {% set posterUrl = mdbImageUrl.value ~ movieSuggestion.posterPath %}
     <img class="card-img-top img-fluid" src="{{ posterUrl }}" width="342">
     
-    <div class="card-body">
+    <div class="card-body bg-light shadow">
         <h5 class="card-title">{{ movieSuggestion.title }}</h5>
         <a class="btn btn-secondary btn-sm" href="{{ imdbLink }}" target="_blank">Learn More</a>
-        <a  class="btn btn-secondary btn-sm" href="{{ addLink }}" >Add to List</a>
+        <a  class="btn btn-secondary btn-sm" href="{{ addLink }}" >Seen It</a>
         <a class="btn btn-secondary btn-sm" href="{{ skipLink }}" >Skip</a>
     </div>
 </div>

@@ -11,3 +11,14 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 
 const $ = require('jquery');
 require('bootstrap');
+
+$(document).ready(function() {
+    
+    // pop demo account values and submit
+    $('.demo').click(function() {
+        $('#username').val('test@testmail.com');
+        $('#password').val('Password!');
+        $('#mrm-login').submit();
+    });
+
+});
