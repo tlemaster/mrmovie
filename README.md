@@ -5,7 +5,7 @@ A small project that is inspired by my father's inability to remember movies he'
 
 ## Tech Stack
 
-This site is created using [Symfony](https://symfony.com/). Runtime development environment used - [Just Another Symfony Docker](https://github.com/tlemaster/Just-Another-Symfony-Docker) by Todd LeMaster
+This site is created using [Symfony](https://symfony.com/) and [Bootstrap 5](https://getbootstrap.com/). Runtime development environment used - [Just Another Symfony Docker](https://github.com/tlemaster/Just-Another-Symfony-Docker) by Todd LeMaster
 
 ## Credits
 

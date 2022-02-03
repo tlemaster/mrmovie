@@ -2,11 +2,11 @@
 {% set addLink = url('movie_list_add', {'id': movieSuggestion.id}) %}
 {% set skipLink = url('movie_list_skip', {'id': movieSuggestion.id }) %}
        
-<div class="card align">
+<div class="card bg-light shadown">
     {% set posterUrl = mdbImageUrl.value ~ movieSuggestion.posterPath %}
     <img class="card-img-top img-fluid" src="{{ posterUrl }}" width="342">
     
-    <div class="card-body bg-light shadow">
+    <div class="card-body">
         <h5 class="card-title">{{ movieSuggestion.title }}</h5>
         <a class="btn btn-secondary btn-sm" href="{{ imdbLink }}" target="_blank">Learn More</a>
         <a  class="btn btn-secondary btn-sm" href="{{ addLink }}" >Seen It</a>
