@@ -99,7 +99,7 @@ class AppFixtures extends Fixture
 
         $apiAttribute = new ApiAttribute();
         $apiAttribute->setName('mdbImageUrl')
-            ->setValue('https://image.tmdb.org/t/p/w342/')
+            ->setValue('https://image.tmdb.org/t/p/w500/')
             ->setApi('MDB');
             
         $manager->persist($apiAttribute);

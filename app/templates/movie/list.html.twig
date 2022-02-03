@@ -3,14 +3,20 @@
 {% block title %}Mr Movie - Dashboard{% endblock %}
 
 {% block body %}
-    <div class="example-wrapper">
-        <h2>Hi {{ app.user.displayName }}</h2>
-        {% include 'components/movieListTable.html.twig' %}   
-    </div>
-    <div class="example-wrapper">
-        {{ render(path('movie_search')) }}
-    </div>
-    <div class= "example-wrapper">
-        {{ render(path('movie_suggest')) }}
+    <div class="col-lg-8 mx-auto p-3 py-md-4 border-bottom">
+        {% include 'components/header.html.twig' %}
+        <main>
+            <div class="row g-4">
+                <div class="col-md-8">
+                    {% include 'components/movieListTable.html.twig' %} 
+                    {# {{ render(path('movie_search')) }}   #}
+                </div>
+                
+                <div class= "col-md-4">
+                    {{ render(path('movie_suggest')) }}
+                </div>
+            </div>    
+        </main>
+        {% include 'components/footer.html.twig' %}
     </div>
 {% endblock %}

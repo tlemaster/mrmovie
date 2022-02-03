@@ -1,17 +1,15 @@
-<div id="movie-suggestion">
-    <div id="pic">
-        {% set posterUrl = mdbImageUrl.value ~ movieSuggestion.posterPath %}
-        <img src="{{ posterUrl }}" width="342">
-    </div>
-    <div id="title-link">
-        <p>{{ movieSuggestion.title }}</p>
-    </div>
-    <div id="actions">
-        {% set imdbLink = imdbMovieUrl.value ~ movieSuggestion.ImdbId %}
-        {% set addLink = url('movie_list_add', {'id': movieSuggestion.id}) %}
-        {% set skipLink = url('movie_list_skip', {'id': movieSuggestion.id }) %}
-        <a href="{{ imdbLink }}" target="_blank"><button type="button">Learn More</button></a>
-        <a href="{{ addLink }}" ><button type="button">Add to List</button></a>
-        <a href="{{ skipLink }}" ><button type="button">Skip</button></a>
+{% set imdbLink = imdbMovieUrl.value ~ movieSuggestion.ImdbId %}
+{% set addLink = url('movie_list_add', {'id': movieSuggestion.id}) %}
+{% set skipLink = url('movie_list_skip', {'id': movieSuggestion.id }) %}
+       
+<div class="card align">
+    {% set posterUrl = mdbImageUrl.value ~ movieSuggestion.posterPath %}
+    <img class="card-img-top img-fluid" src="{{ posterUrl }}" width="342">
+    
+    <div class="card-body">
+        <h5 class="card-title">{{ movieSuggestion.title }}</h5>
+        <a class="btn btn-secondary btn-sm" href="{{ imdbLink }}" target="_blank">Learn More</a>
+        <a  class="btn btn-secondary btn-sm" href="{{ addLink }}" >Add to List</a>
+        <a class="btn btn-secondary btn-sm" href="{{ skipLink }}" >Skip</a>
     </div>
 </div>
