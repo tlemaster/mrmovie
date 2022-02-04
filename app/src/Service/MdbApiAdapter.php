@@ -63,11 +63,17 @@ class MdbApiAdapter
         }
 
         $movies = [];
+
         foreach($data->results as $result) {
-            $movies[$result->id] = $result->title; 
+            $movies[] = ['id' => $result->id,'title' => $result->title]; 
         }
 
         return $movies;
+
+        // migt want an object format later
+        // foreach($data->results as $result) {
+        //     $movies[$result->id] = $result->title; 
+        // }
     }
 
     public function getConfig(): object 

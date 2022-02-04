@@ -11,6 +11,7 @@ use App\Service\MdbApiAdapter;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
@@ -54,10 +55,16 @@ class MdbApiController extends AbstractController
     }
     
     /**
-     * @Route("/api/movie/search", name="mdb_api_movie_search")
+     * @Route("/api/movie/search", name="mdb_api_movie_search", methods={"GET"})
      */
-    public function searchMovie(string $searchTerm): JsonResponse 
+    public function searchMovie(Request $request): JsonResponse 
     {
+        if (!$request->query->get('searchTerm')) {
+            return $this->json('Error - search term is invalid');
+        }
+        
+        $searchTerm = $request->query->get('searchTerm');
+        
         $data = $this->adapter->searchMovie($searchTerm);
         
         if (array_key_exists('mdb-error',$data)) {
