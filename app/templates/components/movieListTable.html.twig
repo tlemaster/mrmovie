@@ -3,15 +3,15 @@
     {% if movieLists %}
         <table class="table table-hover">
             <thead>
-                <th scope="col">Title</th>
-                <th scope="col"></th>
+                <th>Title</th>
+                <th></th>
             </thead>
             <tbody>
             {% for list in movieLists %}
                 {% set deleteLink = url('movie_list_delete', {'id': list.movie.id}) %}
                 {% set imdbLink = imdbMovieUrl.value ~ list.movie.ImdbId %}
-                <tr scope="row">
-                    <td>{{ list.movie.title }}</td> 
+                <tr>
+                    <td class="align-middle">{{ list.movie.title }}</td> 
                     <td class="text-end">
                         <div class="dropdown">
                             <button class="btn btn-secondary btn-sm dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">Actions</button>

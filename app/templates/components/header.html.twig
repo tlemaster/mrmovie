@@ -8,6 +8,6 @@
       <span>Hi {{ app.user.displayName }}</span>
     </div>
     <div class="text-end">
-      <button type="button" class="btn btn-danger me-2">Logout</button>
+      <a href="{{ path('user_logout') }}" class="btn btn-danger me-2">Logout</a>
     </div>
 </header>
