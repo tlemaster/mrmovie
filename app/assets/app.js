@@ -48,7 +48,6 @@ $(document).ready(function() {
                         if (dataObj.title) {
                             html += "<p>" + dataObj.title + "</p>";
                         }
-                        
                     }); 
 
                     $("#movie-search-results").html(html).show();

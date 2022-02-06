@@ -3,10 +3,10 @@
 // src/Controller/Movie/MovieController.php
 namespace App\Controller\Movie;
 
-use App\Controller\Api\MdbApiController;
 use App\Entity\ApiAttribute;
 use App\Entity\Movie;
 use App\Entity\MovieList;
+use App\Service\MdbApiAdapter;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +18,7 @@ class MovieController extends AbstractController
     * @Route("/movie/suggest/", name="movie_suggest")
     */
     public function suggest(
-        MdbApiController $mdbApi, 
+        MdbApiAdapter $adapter, 
         ManagerRegistry $doctrine
     ): Response {
 
@@ -29,20 +29,17 @@ class MovieController extends AbstractController
         $imdbMovieUrl = $entityManager->getRepository(ApiAttribute::class)
             ->findOneBy(['name' => 'ImdbMovieUrl']);
 
-        // Todo: change to apiAdapter once suggest is abastracted out of apiController
-        $response = $mdbApi->suggestMovie($user->getId());
-        $candidateMdbId = json_decode($response->getContent());
+        $candidateMdbId = $adapter->discoverMovie($user);
         $movieSuggestion = $entityManager->getRepository(Movie::class)->findOneBy(['mdbId' => $candidateMdbId]);
 
         if (!$movieSuggestion) {
-            $response = $mdbApi->getMovie($candidateMdbId);
-            $data = json_decode($response->getContent());
-            
+            $mdbMovie = $adapter->getMovie($candidateMdbId);
+                
             $movieSuggestion = new Movie();
-            $movieSuggestion->setMdbId($data->mdbId)
-                ->setImdb($data->imdbId)
-                ->setTitle($data->title)
-                ->setPosterPath($data->posterPath);
+            $movieSuggestion->setMdbId($mdbMovie['mdbId'])
+                ->setImdb($mdbMovie['imdbId'])
+                ->setTitle($mdbMovie['title'])
+                ->setPosterPath($mdbMovie['posterPath']);
 
             $entityManager->persist($movieSuggestion);
             $entityManager->flush();

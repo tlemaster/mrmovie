@@ -8,7 +8,6 @@ use App\Entity\Movie;
 use App\Entity\MovieList;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Service\MdbApiAdapter;
-use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -82,68 +81,14 @@ class MdbApiController extends AbstractController
     {
         $entityManager = $this->doctrine->getManager();
         $user = $entityManager->getRepository(User::class)->findOneBy(['id' => $userId]);
-        $candidate = false;
-        $today = new DateTime();
-        $page = 1;
         
         if (!$user) {
             return $this->json('Error - couldnt find user');
         }
-    
-        while (!$candidate) {
-            $response = $this->mdbClient->request(
-                'GET',
-                'discover/movie', [
-                    'query' => [
-                        'page' => $page,
-                    ]
-            ]);
-            
-            $data = $this->processResponse($response);
-            
-            if (!$data) {
-                return $this->json($response->getStatusCode());
-            }
 
-            $movieList = $entityManager->getRepository(MovieList::class)
-            ->findOneBy(['user' => $user]);
-            
-            if (!$movieList) {
-                $candidate = current($data->results)->id;
-                return $this->json($candidate); 
-            }
+        $movieSuggestion = $this->adapter->discoverMovie($user); 
 
-            foreach ($data->results as $result) {
-                $movie = $entityManager->getRepository(Movie::class)
-                    ->findOneBy(['mdbId' => $result->id]);
-
-                if (!$movie) {
-                    $candidate = $result->id;
-                    return $this->json($candidate);
-                }
-
-                $movieInList = $entityManager->getRepository(MovieList::class)
-                ->findOneBy(['user' => $user, 'movie' => $movie]);
-
-                if (!$movieInList) {
-                    $candidate = $result->id;
-                    return $this->json($candidate);
-                }
-
-                $lastDate = $movieList->getLastDateSuggested();
-                $interval = $lastDate->diff($today);
-                
-                If ($interval->format('%a') > 365) {
-                    $candidate = $result->id;
-                    return $this->json($candidate);
-                }
-                
-            }
-            
-            $page++;
-        }
-
-        return $this->json($candidate);
+        return $this->json($movieSuggestion);
     }
 
 

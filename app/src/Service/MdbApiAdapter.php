@@ -76,6 +76,69 @@ class MdbApiAdapter
         // }
     }
 
+    public function discoverMovie(User $user)
+    {
+        $entityManager = $this->doctrine->getManager();
+        $candidate = false;
+        $today = new \DateTime();
+        $page = 1;
+        
+        while (!$candidate) {
+            $response = $this->mdbClient->request(
+                'GET',
+                'discover/movie', [
+                    'query' => [
+                        'page' => $page,
+                    ]
+            ]);
+            
+            $data = $this->processResponse($response);
+
+            if (!$data) {
+                return  ['mdb-error' => $response->getStatusCode()];
+            }
+
+            $movieList = $entityManager->getRepository(MovieList::class)
+            ->findOneBy(['user' => $user]);
+            
+            if (!$movieList) {
+                $candidate = current($data->results)->id;
+                return $candidate; 
+            }
+
+            foreach ($data->results as $result) {
+                $movie = $entityManager->getRepository(Movie::class)
+                    ->findOneBy(['mdbId' => $result->id]);
+
+                if (!$movie) {
+                    $candidate = $result->id;
+                    return $candidate;
+                }
+
+                $movieInList = $entityManager->getRepository(MovieList::class)
+                ->findOneBy(['user' => $user, 'movie' => $movie]);
+
+                if (!$movieInList) {
+                    $candidate = $result->id;
+                    return $candidate;
+                }
+
+                $lastDate = $movieList->getLastDateSuggested();
+                $interval = $lastDate->diff($today);
+                
+                If ($interval->format('%a') > 365) {
+                    $candidate = $result->id;
+                    return $candidate;
+                }
+                
+            }
+            
+            $page++;
+        }
+        
+        return $candidate;
+    }
+
     public function getConfig(): object 
     {
         $response = $this->mdbClient->request(
