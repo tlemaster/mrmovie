@@ -1,5 +1,15 @@
-<form class="p-3 border rounded-3 bg-light shadow">
-    <label for="movieSearch" class="form-label">Find a Movie, then add it</label>
-    <input type="search" class="form-control movie-search" id="movie-search" placeholder="Search..." aria-label="Search...">
-    <div id="movie-search-results"></div>
+<form class="p-3 border rounded-3 bg-light shadow" id="movie-list-add">
+    <p>Search for a movie, then add it</p>
+    <div class="row">
+        <div class="col-10">
+            <input class="form-control movie-search" id="movie-search" placeholder="Search..." aria-label="Search...">
+        </div>
+        <div class="col-2">
+            <button type="submit" id="movie-add-submit" data-addUrl="{{app.request.getSchemeAndHttpHost() }}" 
+                class="btn btn-secondary">Submit
+            </button>
+        </div>
+    
+        <input class="form-control" id="movie-id" type="hidden" readonly>
+    </div>
 </form>

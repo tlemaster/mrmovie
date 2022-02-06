@@ -10,50 +10,73 @@ import './styles/app.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 const $ = require('jquery');
+require('jquery-ui/ui/widgets/autocomplete');
 require('bootstrap');
 
 $(document).ready(function() {
+    $('#movie-search').val('');
+    $('#movie-id').val('');
     
-    // pop demo account values and submit
+    
     $('.demo').click(function() {
         $('#username').val('test@testmail.com');
         $('#password').val('Password!');
         $('#mrm-login').submit();
     });
 
-    // ajax search functions
     $(".movie-search").focus(function() {
-        $('.movie-search').val('');
-        $("#movie-search-results").html("").hide();
+        $('#movie-search').val('');
+        $('#movie-id').val('');
     });
 
-    $(".movie-search").keyup(function() {
-        var term = $('.movie-search').val();
-        
-        if (term.length > 3) {
+    $("#movie-id").on('input', function(){
+        console.log('fired');
+        var mdbId = $('#movie-id').val();
+
+    });
+
+    $("#movie-search" ).autocomplete({
+        minLength: 3,
+        source: function(request, response) {
             $.ajax({
                 type: "GET",
                 url: "/api/movie/search",
                 data: {
-                    searchTerm: term
+                    searchTerm: request.term
                 },
                 success: function(data) {
-                    var html = '';
-
-                    if (data.length == 0) {
-                       var html = "No results found, try changing your search!";
-                    }
-                    
-                    $.each(data, function(arrKey, dataObj) {
-                        if (dataObj.title) {
-                            html += "<p>" + dataObj.title + "</p>";
-                        }
-                    }); 
-
-                    $("#movie-search-results").html(html).show();
+                    response(data);
                 }
             });
+        },
+        focus: function(event, ui) {
+            $("#movie-search").val(ui.item.title);
+            
+            return false;
+        },
+        select: function(event, ui) {
+            $("#movie-search").val(ui.item.title);
+            $("#movie-id").val(ui.item.id);
+            
+            return false;
         }
+    })
+    .autocomplete("instance")._renderItem = function(ul, item) {
+        return $("<li>")
+          .append( "<div>" + item.title + "</div>")
+          .appendTo(ul);
+    };
+
+
+    $("#movie-list-add").submit(function(event) {
+        var mdbId = $('#movie-id').val();
+        var addUrl = $('#movie-add-submit').attr("data-addUrl");
+        
+        if (mdbId) {
+            window.location = addUrl + '/movie/list/addMdb/' + mdbId; 
+        }
+        
+        event.preventDefault();
     });
 
 });

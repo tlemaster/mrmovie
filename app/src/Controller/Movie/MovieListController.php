@@ -9,6 +9,7 @@ use App\Entity\Movie;
 use App\Entity\User;
 use \DateTime;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Service\MdbApiAdapter;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -17,9 +18,12 @@ class MovieListController extends AbstractController
 {
     protected ManagerRegistry $doctrine;
 
-    public function __construct(ManagerRegistry $doctrine)
-    {
-        $this->doctrine = $doctrine;   
+    public function __construct(
+        ManagerRegistry $doctrine, 
+        MdbApiAdapter $adapter
+    ){
+        $this->doctrine = $doctrine;
+        $this->adapter = $adapter;   
     }
 
     /**
@@ -72,6 +76,33 @@ class MovieListController extends AbstractController
     {
         $user = $this->getUser();
         $this->addMovieToList($id, $user);
+
+        return $this->redirectToRoute('movie_list');
+    }
+
+
+    /**
+     *  @Route("/movie/list/addMdb/{id}", name="movie_list_add_mdbid")
+     */
+    public function addByMdbId(int $id) {
+        $user= $this->getUser();
+        $entityManager = $this->doctrine->getManager();
+        $movie = $entityManager->getRepository(Movie::class)->findOneBy(['mdbId' =>$id]);
+
+        if (!$movie) {
+            $mdbMovie = $this->adapter->getMovie($id);
+                
+            $movie = new Movie();
+            $movie->setMdbId($mdbMovie['mdbId'])
+                ->setImdb($mdbMovie['imdbId'])
+                ->setTitle($mdbMovie['title'])
+                ->setPosterPath($mdbMovie['posterPath']);
+
+            $entityManager->persist($movie);
+            $entityManager->flush();
+        }
+
+        $this->addMovieToList($movie->getId(), $user);
 
         return $this->redirectToRoute('movie_list');
     }
